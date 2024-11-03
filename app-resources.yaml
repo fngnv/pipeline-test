@@ -8,8 +8,8 @@ spec:
   triggers:
     - type: "GitHub"
       github:
-        secret: ""
-  sourse:
+        secret: "secret"
+  source:
     git:
       uri: "https://github.com/fngnv/pipeline-test"
       ref: "master"
@@ -45,9 +45,9 @@ spec:
     spec:
       containers:
         - name: integration-deployment-pipeline-test
-        image: openshift/integration-deployment-pipeline-test:latest
-        ports:
-          - containerPort: 8080
+          image: openshift/integration-deployment-pipeline-test:latest
+          ports:
+            - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -58,8 +58,8 @@ metadata:
 spec:
   ports:
     - port: 8080
-    protocol: TCP
-    targetPort: 8080
+      protocol: TCP
+      targetPort: 8080
   selector:
     app: integration-deployment-pipeline-test
 ---
