@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-router-access
+  namespace: testproject
+spec:
+  podSelector:
+    matchLabels:
+      app: integration-deployment-pipeline-test
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
