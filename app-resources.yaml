@@ -6,7 +6,6 @@ metadata:
     app: integration-deployment-pipeline-test
   name: integration-deployment-pipeline-test
 spec:
-  runPolicy: "Serial"
   triggers:
     - type: "GitHub"
       github:
@@ -19,14 +18,15 @@ spec:
     dockerStrategy: {}
   output:
     to:
-      kind: "ImageStreamTag"
-      name: "integration-deployment-pipeline-test:latest"
+      kind: ImageStreamTag
+      name: integration-deployment-pipeline-test:latest
 ---
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   annotations:
     openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
   labels:
     app: integration-deployment-pipeline-test
   name: integration-deployment-pipeline-test
@@ -39,6 +39,11 @@ metadata:
     app: integration-deployment-pipeline-test
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+  paused: false
+  revisionHistoryLimit: 5
+  minReadySeconds: 0
   selector:
     matchLabels:
       app: integration-deployment-pipeline-test
