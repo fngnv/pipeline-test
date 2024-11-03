@@ -1,0 +1,74 @@
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: integration-deployment-pipeline-test
+spec:
+  runPolicy: "Serial"
+  triggers:
+    - type: "GitHub"
+      github:
+        secret: ""
+  sourse:
+    git:
+      uri: "https://github.com/fngnv/pipeline-test"
+      ref: "master"
+  strategy:
+    dockerStrategy: {}
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "integration-deployment-pipeline-test:latest"
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  labels:
+    app: integration-deployment-pipeline-test
+  name: integration-deployment-pipeline-test
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: integration-deployment-pipeline-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: integration-deployment-pipeline-test
+  template:
+    metadata:
+      labels:
+        app: integration-deployment-pipeline-test
+    spec:
+      containers:
+        - name: integration-deployment-pipeline-test
+        image: openshift/integration-deployment-pipeline-test:latest
+        ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: integration-deployment-pipeline-test
+  name: integration-deployment-pipeline-test
+spec:
+  ports:
+    - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: integration-deployment-pipeline-test
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: integration-deployment-pipeline-test
+spec:
+  to:
+    kind: Service
+    name: integration-deployment-pipeline-test
+    weight: 100
