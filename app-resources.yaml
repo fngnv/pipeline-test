@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
         - name: integration-deployment-pipeline-test
-          image: openshift/integration-deployment-pipeline-test:latest
+          image: image-registry.openshift-image-registry.svc:5000/testproject/integration-deployment-pipeline-test
           ports:
             - containerPort: 8080
 ---
