@@ -57,6 +57,15 @@ spec:
           image: image-registry.openshift-image-registry.svc:5000/testproject/integration-deployment-pipeline-test:latest
           ports:
             - containerPort: 8080
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - integration-deployment-pipeline-test
+        from:
+          kind: ImageStreamTag
+          name: integration-deployment-pipeline-test:latest
 ---
 apiVersion: v1
 kind: Service
