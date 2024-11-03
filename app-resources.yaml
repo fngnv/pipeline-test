@@ -75,6 +75,8 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
+  annotations:
+    router.openshift.io/override-host: "true"
   labels:
     app: integration-deployment-pipeline-test
     application: integration-deployment-pipeline-test
@@ -84,3 +86,8 @@ spec:
     kind: Service
     name: integration-deployment-pipeline-test
     weight: 100
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
+  port:
+    targetPort: 8080
