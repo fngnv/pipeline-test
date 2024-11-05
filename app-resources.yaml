@@ -10,11 +10,6 @@ spec:
     - type: "GitHub"
       github:
         secret: "secret"
-    - type: "ImageChange"
-      imageChange:
-        from:
-          kind: ImageStreamTag
-          name: integration-deployment-pipeline-test:latest
   source:
     git:
       uri: "https://github.com/fngnv/pipeline-test"
